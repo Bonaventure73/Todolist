@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Créer une tâche
+{% endblock %}
+
+{% block body %}
+    <div class="col-md-12 mb-5 text-center">
+        <h2>Créer une tâche</h2>
+    </div>
+    {{ form_start(form, {'attr': {'style': 'width:100%;'}}) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            $('.datetimepicker').datetimepicker({
+                icons : {
+                    time: 'fa fa-time',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-screenshot',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-remove'
+                },
+                sideBySide: true
+            })
+        })
+    </script>
+{% endblock %}

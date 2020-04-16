@@ -1,0 +1,103 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Liste des Taches
+{% endblock %}
+
+{% block body %}
+
+{% if app.user %}
+
+<div class="col-md-4 offset-md-2 left-column mb-1">
+    <ul class="list-group">
+        {% for listing in listings %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{{ path ('listing_show', {'listingId':listing.id})}}">
+                {{ listing.name }}
+                </a>
+            </li>
+        {% endfor %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <form method="post" action="{{ path ('listing_create') }}">
+                <div class="input-group">
+                    <input type="text" placeholder="Ajouter une liste"
+                    class="form-control input-type-level" name="name"/>
+                    <div class="input-group-append">
+                        <button id="newlist" class="btn btn-outline-primary" type="submit">
+                            <i class="fa fa-plus"></i>
+                            <i class="fas fa-blender-phone"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </li>
+    </ul>
+</div>
+
+<div class="col-md-5 list mb-1">
+    {% if currentListing %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+            <a class="navbar-brand" href="#">{{ currentListing.name }}</a>
+            <div class="input-group-append">
+                <form class="form-inline">
+                    <a id="new" href="{{path('task_create',{'listingId':currentListing.id}) }}">
+                        <button class="btn btn-outline-success" type="button">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </a>&nbsp;
+                    <a id="del" href="{{path('listing_delete',{'listingId':currentListing.id}) }}">
+                        <button class="btn btn-outline-danger" type="button">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </a>
+                </form>
+            </div>
+        </nav>
+       
+        <div class='row px-4 mt-3'>
+            {% if currentListing.tasks|length %}
+                <table class="table table-stripped">
+                    {% for task in currentListing.tasks %}
+                        <tr>
+                            <td>
+                                <a href="#">{{ task.name }}</a>
+                            </td>
+                            <td>
+                               <a href="{{ path('task_edit', {'listingId':
+                               currentListing.id, 'taskId': task.id}) }}">
+                                   <i class="fa fa-edit"></i>
+                               </a>
+
+                               <a href="{{ path('task_delete', {'listingId':
+                               currentListing.id, 'taskId': task.id}) }}">
+                                   <i class="fa fa-minus"></i>
+                               </a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h5 class="pt-3">Aucune tâche pour cette liste</h5>
+                <p class="pt-3">Vous pouvez ajouter une nouvelle tâche en tapant son nom puis Entrée, ou en cliquant sur le bouton <i class="fa fa-plus"></i>
+                </p>
+            {% endif %}
+        </div>
+    {% else %}
+        <h5 class="pt-3">Pas de liste existante</h5>
+        <p class="pt-3">Vous pouvez créer une nouvelle liste en tapant son nom puis Entrée, ou en cliquant sur le bouton <i class="fa fa-plus"></i>
+        </p>
+    {% endif %}
+</div>
+
+{% else %}
+    <div class="col-md-12 offset-2">
+        <h5 class="mb-4">Pour gérer les tâches du projet<br> merci de vous connecter</h5>
+
+        <a href="{{path('security_login')}}" class="btn btn-primary">Connexion</a>
+    </div>
+{% endif %}
+
+
+{% endblock %}
